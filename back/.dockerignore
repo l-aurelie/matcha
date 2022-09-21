@@ -1,0 +1,7 @@
+#Similar to a .gitignore file, we can add a .dockerignore file which will prevent certain files from being included in the image build.
+
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+dist

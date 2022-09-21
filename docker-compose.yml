@@ -1,0 +1,57 @@
+version: "3.8"
+#les differents services nest, react, postgres
+services:
+  react:
+    #build l'image a partir du fichier name Dockerfile situe dans le dossier context
+    build:
+      dockerfile: Dockerfile
+      context: ./front/
+    #pour changer le port par defaut ou se lance react
+    environment:
+      - PORT=4200
+    #Pour que le code en local puisse s'actualiser en temps reel dans le container
+    volumes:
+    #dossierlocal:dossiercontainer
+      - ./front:/usr/src/app
+    #portmachine:portcontainer
+    ports:
+      - 4200:4200
+  nest:
+    build:
+      dockerfile: Dockerfile
+      context: ./back/
+    depends_on:
+      postgres:
+      #permet d'attendre que la db soit lancee
+        condition: service_healthy
+   # environment:
+      #l'adresse pour acceder a la db
+      #dialect+driver://username:password@host:port/database
+      #DATABASE_URL: postgres://user:password@postgres:5432/db
+      #NODE_ENV: development ou production (a etudier)
+    env_file:
+      - .env
+    volumes:
+      - ./back:/usr/src/app
+    ports:
+      - 3000:3000
+  postgres:
+    #run a partir de l'image donnee
+    image: postgres:latest
+    #les variable qui vont etre passees a postgres : user/password/database cree
+    #environment:
+    #  POSTGRES_USER: user
+    #  POSTGRES_PASSWORD: password
+    #  POSTGRES_DB: db
+    #Pour ne pas laisser les variable en dur dans le dockerfile
+    env_file:
+      - .env
+    #volumes:
+    #  - ./DB:/var/lib/postgresql/data
+    ports: 
+      - 3500:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
