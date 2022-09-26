@@ -1,49 +1,69 @@
 version: "3.8"
-#les differents services nest, react, postgres
+#.les differents services nest, react, postgres
 services:
   react:
-    #build l'image a partir du fichier name Dockerfile situe dans le dossier context
+    #.build l'image a partir du fichier name Dockerfile situe dans le dossier context
     build:
       dockerfile: Dockerfile
       context: ./front/
-    #pour changer le port par defaut ou se lance react
+    #.pour changer le port par defaut ou se lance react
     environment:
       - PORT=4200
-    #Pour que le code en local puisse s'actualiser en temps reel dans le container
-    volumes:
-    #dossierlocal:dossiercontainer
-      - ./front:/usr/src/app
-    #portmachine:portcontainer
+    #.portmachine:portcontainer
     ports:
       - 4200:4200
+    #.pour resoudre "No command specified" sur certains ordis (sinon direct dans dockerfile)
+    #.pour debugger
+    #command: ["tail", "-f", "/dev/null"]
+
+    #.PROD-MODE--
+    command: sh -c "cd /usr/src/app && serve -s build"
+    #.DEV-MODE--
+    #command: sh -c "cd /usr/src/app && npm start"
+    #.Pour que le code en local puisse s'actualiser en temps reel dans le container
+    #.dossierlocal:dossiercontainer
+    #volumes:
+    #  - ./front:/usr/src/app
+    #.-----
+
   nest:
     build:
       dockerfile: Dockerfile
       context: ./back/
     depends_on:
       postgres:
-      #permet d'attendre que la db soit lancee
+      #.permet d'attendre que la db soit lancee
         condition: service_healthy
-   # environment:
-      #l'adresse pour acceder a la db
-      #dialect+driver://username:password@host:port/database
+    #environment:
+      #.l'adresse pour acceder a la db
+      #.dialect+driver://username:password@host:port/database
       #DATABASE_URL: postgres://user:password@postgres:5432/db
       #NODE_ENV: development ou production (a etudier)
     env_file:
       - .env
-    volumes:
-      - ./back:/usr/src/app
     ports:
       - 3000:3000
+    #.command : pour resoudre "No command specified" sur certains ordis (sinon direct dans dockerfile)
+    #.pour debugger
+    #command: ["tail", "-f", "/dev/null"]
+    
+    #.PROD-MODE--
+    command: sh -c "cd /usr/src/app && npm run start:prod"
+    #.DEV-MODE--
+    command: sh -c "cd /usr/src/app && npm run start:dev"
+    #volumes:
+    #  - ./back:/usr/src/app
+    #.-----
+  
   postgres:
-    #run a partir de l'image donnee
+    #.run a partir de l'image donnee
     image: postgres:latest
-    #les variable qui vont etre passees a postgres : user/password/database cree
+    #.les variable qui vont etre passees a postgres : user/password/database cree
     #environment:
     #  POSTGRES_USER: user
     #  POSTGRES_PASSWORD: password
     #  POSTGRES_DB: db
-    #Pour ne pas laisser les variable en dur dans le dockerfile
+    #.Pour ne pas laisser les variable en dur dans le dockerfile
     env_file:
       - .env
     #volumes:
