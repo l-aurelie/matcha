@@ -2,24 +2,23 @@ version: "3.8"
 #.les differents services nest, react, postgres
 services:
   react:
-    #.build l'image a partir du fichier name Dockerfile situe dans le dossier context
-    build:
-      dockerfile: Dockerfile
-      context: ./front/
+    #.build l'image a partir du Dockerfile situe dans le repo precise (nom img precise 'image:')
+    build: ./front/
+    image: react_img
     #.pour changer le port par defaut ou se lance react
     environment:
       - PORT=4200
     #.portmachine:portcontainer
     ports:
       - 4200:4200
-    #.pour resoudre "No command specified" sur certains ordis (sinon direct dans dockerfile)
+    #.pour resoudre "No command specified" sur certains ordis utiliser command (sinon direct dans dockerfile)
     #.pour debugger
     #command: ["tail", "-f", "/dev/null"]
 
     #.PROD-MODE--
     #command: sh -c "cd /usr/src/app && serve -s build"
     #.DEV-MODE--
-    command: sh -c "cd /usr/src/app && npm start"
+    #command: sh -c "cd /usr/src/app && npm start"
     #.Pour que le code en local puisse s'actualiser en temps reel dans le container
     #.dossierlocal:dossiercontainer
     volumes:
@@ -27,9 +26,8 @@ services:
     #.-----
 
   nest:
-    build:
-      dockerfile: Dockerfile
-      context: ./back/
+    build: ./back/
+    image: nest_img
     depends_on:
       postgres:
       #.permet d'attendre que la db soit lancee
@@ -43,14 +41,14 @@ services:
       - .env
     ports:
       - 3000:3000
-    #.command : pour resoudre "No command specified" sur certains ordis (sinon direct dans dockerfile)
+    #.pour resoudre "No command specified" sur certains ordis  utiliser command(sinon direct dans dockerfile)
     #.pour debugger
     #command: ["tail", "-f", "/dev/null"]
     
     #.PROD-MODE--
     #command: sh -c "cd /usr/src/app && npm run start:prod"
     #.DEV-MODE--
-    command: sh -c "cd /usr/src/app && npm run start:dev"
+    #command: sh -c "cd /usr/src/app && npm run start:dev"
     volumes:
       - ./back:/usr/src/app
     #.-----
@@ -67,9 +65,9 @@ services:
     env_file:
       - .env
     volumes:
-      - ./DB:/var/lib/postgresql/data
-      #.if mount dont work, rename anonyme volume (create in postgres official img)
-      #- db_data:/var/lib/postgresql/data
+      ##- ./DB:/var/lib/postgresql/data
+      #.if mount dont work(42 dump), cant choose host path so only rename anonyme volume (create in postgres official img)
+      - db_data:/var/lib/postgresql/data
     ports: 
       - 3500:5432
     healthcheck:
@@ -79,5 +77,5 @@ services:
       retries: 5
 
 #.to name anonyme volume from Postgres official dockerfile (stored in /var/lib/docker/volumes/)      
-#volumes:
-#  db_data:
+volumes:
+  db_data:

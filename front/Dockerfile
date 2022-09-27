@@ -8,18 +8,18 @@ WORKDIR /usr/src/app
 #.ENV PATH /app/node_modules/.bin:$PATH
 
 #.PROD-- : installe les dependances, (ne marche que si pas de volume, sinon installer direct dans le volume)
-#COPY package*.json ./
-#RUN npm install
+##COPY package*.json ./
+##RUN npm install
 #.-----
 
 #.copier toute l'app dans le workdir
 COPY . .
 
 #.DEV-MODE--
-##CMD ["npm", "start"]
+CMD ["npm", "start"]
 
 #.PROD-MODE--
 #.Behind the scenes, it uses babel to transpile your code and webpack as the build tool to bundle up your app.
-#RUN npm  run build
-#RUN   npm install -g serve
+##RUN npm  run build
+##RUN   npm install -g serve
 ##CMD ["serve", "-s", "build"]
