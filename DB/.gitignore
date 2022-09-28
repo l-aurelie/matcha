@@ -1,0 +1,6 @@
+#DONT PUSH DB VOLUME CONTENT
+#ignore all files
+*
+#ignore all subfolders
+*/
+!.gitignore
