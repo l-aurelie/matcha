@@ -1,56 +1,96 @@
-DOCKERIZE REACT
-#cree un projet react
-npx create-react-app front
-{#Pour le lancer : 
-	$>npm start (pour le dvpt) / ou npm run build (production)}
+# USAGE
 
-#Dockerize react:
+
+```git clone ```
+
+- Selectionner le mode dev ou prod en commentant/decommentant respectivement les parties entre #.DEV-MODE-- #.PROD-MODE-- du docker-compose et des Dockerfiles
+
+- Installer les dependances (uniquement pour le mode dev, avec volumes)
+
+    ```cd front ; npm install``` et```cd back ; npm install```
+
+
+- Lancer les containers
+    ```docker-compose up``` ou
+    ```docker-compose up --build```
+- Rendez vous sur ```localhost:4200```
+
+- Autres commandes utiles : ```docker-compose down``` ; ```docker system prune -a -f --volumes``` (/!\ supprime les donnees de la db avec --volumes) ; ```docker exec -it [container] sh```
+
+* * *
+* * *
+* * *
+
+# Roadmap
+
+### DOCKERIZE REACT
+
+- cree un projet react
+
+```npx create-react-app front```
+
+- Pour le lancer : 
+	```npm start``` (pour le dvpt) / ou ```npm run build``` (production)
+
+- Dockerize react:
     creer un dockerfile et un dockerignore (voir les fichiers commentes du projet
 
-#Changer le port 3000 par un autre port (pour que le front et le back run sur des ports differents)
-    "start": "PORT=4200 react-scripts start", (pour remplacer dans le package.json)
+- Changer le port 3000 par un autre port (pour que le front et le back run sur des ports differents)
+    ```"start": "PORT=4200 react-scripts start"```, (pour remplacer dans le package.json)
 
-{#Tester : Build l'image: 
-    $> docker build . -t react
-Run l'image: 
-    $> docker run -p 4200:4200 react }
-===============================================i
+- Tester : Build l'image: 
 
-DOCKERIZE NEST 
+    ```docker build . -t react```
 
-#Creer un projet nestjs : 
-$> nest new back
-{#Pour le lancer : 
-    $> npm run start:dev (ou $> npm run start)
-    et acceder a localhost:3000}
+    Run l'image: 
     
-#Dockerize nest: 
+    ```docker run -p 4200:4200 react``` 
+---
+
+### DOCKERIZE NEST 
+
+- Creer un projet nestjs : 
+ 
+ ```nest new back```
+
+- Pour le lancer : 
+
+    ```npm run start:dev``` (ou $> npm run start)
+    et acceder a localhost:3000)
+    
+- Dockerize nest: 
     creer un dockerfile et un dockerignore (voir les fichiers commentes du projet)
 
-{#Tester : Build l'image: 
-    $> docker build . -t nest
-Run l'image: 
-    $> docker run -p 3000:3000 nest }
+- Tester : Build l'image:
 
-===============================================i
+    ```docker build . -t nest```
+    
+    Run l'image:
 
-DOCKER-COMPOSE
-#lier les differents service cf docker-compose.yml
+    ```docker run -p 3000:3000 nest``` 
 
-===============================================i
-.env
-#pour mettre les variables d'env pour des raisons de securite
+---
 
-===============================================i
-POSTGRES WITH NESTJS
+### DOCKER-COMPOSE
+- lier les differents service cf docker-compose.yml
+
+---
+### .env
+- pour mettre les variables d'env pour des raisons de securite (ne pas mettre sur git clef API + mots de passe)
+
+---
+### POSTGRES WITH NESTJS
 Voir la doc nest section database
 
-#installer typeorm dans les modules nest
-npm install --save @nestjs/typeorm typeorm pg (dans back_dir)
-#installer le package pour acceder aux variable d’env
- npm install --save @nestjs/config (dans back_dir)
-#connecter typeorm a la db :
-..................................
+- installer typeorm dans les modules nest
+
+```npm install --save @nestjs/typeorm typeorm pg``` (dans back_dir)
+- installer le package pour acceder aux variable d’env
+
+ ```npm install --save @nestjs/config``` (dans back_dir)
+- connecter typeorm a la db :
+
+```
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -82,11 +122,11 @@ import { ConfigModule } from '@nestjs/config';
   providers: [AppService],
 })
 export class AppModule {}
-......................................
+```
 
-#tester:
+- tester:
 docker-compose up ou docker-compose --build(pour build les images avant)
 
-#test nest/pg
+- test nest/pg
 Creer une entites et essayer d'ajouter une entree dans la database avec post pour voir si la db fonctionne (requetes avec postman)
 
