@@ -1,14 +1,11 @@
 version: "3.8"
-#.les differents services nest, react, postgres
 services:
   react:
-    #.build l'image a partir du Dockerfile situe dans le repo precise (nom img precise 'image:')
     build: ./front/
     image: react_img
-    #.pour changer le port par defaut ou se lance react
+    container_name: react
     environment:
       - PORT=4200
-    #.portmachine:portcontainer
     ports:
       - 4200:4200
     #.pour resoudre "No command specified" sur certains ordis utiliser command (sinon direct dans dockerfile)
@@ -25,18 +22,13 @@ services:
       - ./front:/usr/src/app
     #.-----
 
-  nest:
+  express:
     build: ./back/
-    image: nest_img
+    image: express_img
+    container_name: express
     depends_on:
       postgres:
-      #.permet d'attendre que la db soit lancee
         condition: service_healthy
-    #environment:
-      #.l'adresse pour acceder a la db
-      #.dialect+driver://username:password@host:port/database
-      #DATABASE_URL: postgres://user:password@postgres:5432/db
-      #NODE_ENV: development ou production (a etudier)
     env_file:
       - .env
     ports:
@@ -46,36 +38,28 @@ services:
     #command: ["tail", "-f", "/dev/null"]
     
     #.PROD-MODE--
-    #command: sh -c "cd /usr/src/app && npm run start:prod"
+    #command: sh -c "cd /usr/src/app && "
     #.DEV-MODE--
-    #command: sh -c "cd /usr/src/app && npm run start:dev"
+    #command: sh -c "cd /usr/src/app && "
     volumes:
       - ./back:/usr/src/app
     #.-----
   
   postgres:
-    #.run a partir de l'image donnee
     image: postgres:latest
-    #.les variable qui vont etre passees a postgres : user/password/database cree
-    #environment:
-    #  POSTGRES_USER: user
-    #  POSTGRES_PASSWORD: password
-    #  POSTGRES_DB: db
-    #.Pour ne pas laisser les variable en dur dans le dockerfile
+    container_name: postgres
+    hostname: postgres
     env_file:
       - .env
     volumes:
-      ##- ./DB:/var/lib/postgresql/data
-      #.if mount dont work(42 dump), cant choose host path so only rename anonyme volume (create in postgres official img)
       - db_data:/var/lib/postgresql/data
     ports: 
       - 3500:5432
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d db"]
+      test: ["CMD-SHELL", "pg_isready -U userpg -d db"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-#.to name anonyme volume from Postgres official dockerfile (stored in /var/lib/docker/volumes/)      
 volumes:
   db_data:

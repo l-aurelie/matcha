@@ -1,7 +1,8 @@
 #Similar to a .gitignore file, we can add a .dockerignore file which will prevent certain files from being included in the image build.
+#This will speed up the Docker build process as our local dependencies inside the “node_modules” directory will not be sent to the Docker daemon.
 
-Dockerfile
-.dockerignore
 node_modules
-npm-debug.log
-dist
+#TODO
+build
+.dockerignore
+Dockerfile
