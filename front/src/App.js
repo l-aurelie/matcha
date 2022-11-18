@@ -1,34 +1,109 @@
 //A Garder
 
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import React from 'react'
-import axios from 'axios'
-  
-/*const sendUser = () => {  
-    axios.post('http://localhost:3000/user', { name: newuser })
-      .then(function (response) { console.log(response); })
-      .catch(function (error) { console.log(error); });
-      getUsers();
-  }*/
+//import axios from 'axios'
 
-function sendUser(newUser){
-  console.log("sendUser");
+/*function UserForm(){
+const [newUser, setnewUser] = useState({});
+
+function handleSubmit(e){
+  e.preventDefault();
   console.log(newUser);
-  axios.post('http>//localhost:3000/user', {newUser})
-  .then((res) => {console.log(res);})
-  .catch((err) => {console.log(err)});
+}
+function onChange(e){
+  const name = e.target.name;
+  const value = e.targe.value;
+  setnewUser(values => ({...values, [name]: value}))
 }
 
-function UserForm(){
-  const [newUser, setnewUser] = useState({name: "", age: ""})
-  function handleSubmit (){
+
+return(
+  <div>
+  <form onSubmit={handleSubmit}>
+    <label>
+      <input type="text" name="name" value={newUser.name || ""} onChange={onChange}/>
+    </label>
+    <label>
+      <input type="number" name="age" value={newUser.age  || ""} onChange={onChange}/>
+    </label>
+    <input type="submit"/>
+  </form>
+  <p>
+    {newUser.name}
+    {newUser.age}
+  </p>
+  </div>
+);
+
+}*/
+function MyForm() {
+  const [inputs, setInputs] = useState({});
+
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs(values => ({...values, [name]: value}))
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert(inputs);
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>Enter your name:
+      <input type="text" name="username" value={inputs.username || ""} onChange={handleChange} />
+      </label>
+      <label>Enter your age:
+        <input type="number" name="age" value={inputs.age || ""} onChange={handleChange} />
+        </label>
+        <input type="submit" />
+    </form>
+  )
+}
+
+function App() {
+  
+  return (
+    <div>
+      <MyForm/>  
+    </div>
+  );
+}
+
+export default App;
+
+
+
+
+
+
+
+
+ /*const [newUser, setnewUser] = useState({name: "", age: ""})
+  
+  function handleSubmit (e){
+    e.preventDefault();
     console.log("submit");
-    sendUser(newUser.name);
+    axios.post('http://localhost:3000/user', {...newUser})
+      .then(function (response) { console.log(response); })
+      .catch(function (error) { console.log(error); });
   }
 
   function handleChangeName(e){ setnewUser({...newUser, name: e.target.value }); }
   function handleChangeAge(e){ setnewUser({...newUser, age: e.target.value}); }
+
+  const getUsers = () =>{
+    axios.get('http://localhost:3000/user/all')
+      .then(function(response){ console.log(response); })
+      .catch(function(error){ console.log(error);}); }
+
+  useEffect(()=>{
+    getUsers();
+  },[])
 
   return(
     <div>
@@ -39,7 +114,7 @@ function UserForm(){
         </label>
         <br/>
         <label>Age :
-          <input type="text" value={newUser.age} onChange={handleChangeAge}/>
+          <input type="number" value={newUser.age} onChange={handleChangeAge}/>
         </label>
         <input type="submit" value="Envoyer"/>
       </form>
@@ -48,35 +123,4 @@ function UserForm(){
         {newUser.age}{" "}
       </p>
     </div>
-  );
-}
-
-function App() {
- /* const [newuser, setNewuser] = useState('');
-  const [users, setUsers] = useState([]);
-
-  const getUsers = () =>{
-    axios.get('http://localhost:3000/user')
-      .then(function(response){
-        console.log(response);
-        setUsers(response.data)
-      })
-    .catch(function(error){console.log(error);});
-  }
-
-  useEffect(()=>{
-    getUsers();
-  },[])
-
-
-  */
-
-  
-  return (
-    <div>
-      <UserForm/>  
-    </div>
-  );
-}
-
-export default App;
+  );*/

@@ -1,11 +1,19 @@
 const express = require("express");
 const pool = require("./db");
 const app = express();
+const cors = require('cors');
 
 app.use(express.json())
+app.use(cors({
+    origin: 'http://localhost:4200',
+    credentials: true
+}));
+
+//========
 
 app.get("/user/all", async (req, res) => {
    try{
+        console.log("ALL");
         const allUsers = await pool.query("SELECT * FROM users;");
         res.json(allUsers.rows);
 
@@ -25,13 +33,15 @@ app.get("/user/:id", async (req, res) => {
 
 });
 
-
-
 app.post("/user", async (req, res) => {
     try{
-        const {name} = req.body;
+        console.log("POST");
+        console.log(req.body);
+       // const {name} = req.body.name;
+        const {name, age} = req.body;
+        console.log(age);
         const newUser = await pool.query(
-            "INSERT INTO users (name) VALUES ($1) RETURNING *", [name]);
+            "INSERT INTO users (name, age) VALUES ($1, $2) RETURNING *", [name, age]);
         res.json("created");
     } catch(err){
         console.error(err.message);
@@ -60,6 +70,8 @@ app.delete("/user/:id", async (req, res)=> {
         console.error(err.message);
     }
 });
+
+//========
 
 app.listen(3000, () => {
     console.log("server is listening on port 3000")
