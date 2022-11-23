@@ -1,5 +1,5 @@
 const express = require("express");
-const pool = require("./db");
+const pool = require("./database/db");
 const app = express();
 const cors = require('cors');
 
@@ -37,15 +37,15 @@ app.post("/user", async (req, res) => {
     try{
         console.log("POST");
         console.log(req.body);
-       // const {name} = req.body.name;
+        console.log(req.body.name);
+        console.log(req.body.age);
         const {name, age} = req.body;
+        console.log(name);
         console.log(age);
         const newUser = await pool.query(
             "INSERT INTO users (name, age) VALUES ($1, $2) RETURNING *", [name, age]);
         res.json("created");
-    } catch(err){
-        console.error(err.message);
-    }
+    } catch(err){ console.error(err.message); }
 });
 
 app.put("/user/:id", async (req, res) => {
