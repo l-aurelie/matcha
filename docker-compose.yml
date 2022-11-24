@@ -4,20 +4,15 @@ services:
     build: ./front/
     image: react_img
     container_name: react
-    environment:
-      - PORT=4200
+    #environment:
+    #  - PORT=4200
     ports:
       - 4200:4200
-    #.pour resoudre "No command specified" sur certains ordis utiliser command (sinon direct dans dockerfile)
-    #.pour debugger
     #command: ["tail", "-f", "/dev/null"]
-
     #.PROD-MODE--
-    #command: sh -c "cd /usr/src/app && serve -s build"
+    #command: sh -c "cd /usr/src/app && npm run preview"
     #.DEV-MODE--
-    #command: sh -c "cd /usr/src/app && npm start"
-    #.Pour que le code en local puisse s'actualiser en temps reel dans le container
-    #.dossierlocal:dossiercontainer
+    #command: sh -c "cd /usr/src/app && npm run dev"
     volumes:
       - ./front:/usr/src/app
     #.-----
@@ -33,10 +28,7 @@ services:
       - .env
     ports:
       - 3000:3000
-    #.pour resoudre "No command specified" sur certains ordis  utiliser command(sinon direct dans dockerfile)
-    #.pour debugger
     #command: ["tail", "-f", "/dev/null"]
-    
     #.PROD-MODE--
     #command: sh -c "cd /usr/src/app && "
     #.DEV-MODE--
