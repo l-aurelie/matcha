@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const pool = require("../database/db");
+const pool = require("../../database/db");
 
 router.get("/all", async (req, res) => {
     try{
@@ -12,15 +12,26 @@ router.get("/all", async (req, res) => {
      console.error(err.message);
     }
  });
+
+ router.get("/filter/:age/:distance", async (req, res) => {
+    console.log("filter");
+    const actual = await (await pool.query("SELECT * FROM users WHERE user_id = $1;", [1])).rows[0];
+    console.log(actual);
+    const ageMin = actual.age - Number(req.params.age);
+    const ageMax = actual.age + Number(req.params.age);
+    try{
+        //const userFiltered = await pool.query("SELECT * FROM users WHERE age BETWEEN $1 AND $2;", [ageMin, ageMax]);
+        const userFiltered = await pool.query("SELECT * FROM users WHERE ST_DistanceSphere(ST_MakePoint(latitude, longitude), ST_MakePoint($1, $2)) > 1;", [actual.latitude, actual.longitude]);
+        res.json(userFiltered.rows)
+    }catch(err){console.error(err);}
+ });
  
  router.get("/:id", async (req, res) => {
      try{
          const {id} = req.params;
          const user = await pool.query("SELECT * FROM users WHERE user_id = $1", [id]);
          res.json(user.rows[0]);
-     }catch(err){
-         console.error(err.message);
-     }
+     }catch(err){ console.error(err.message); }
  });
  
  router.post("/", async (req, res) => {

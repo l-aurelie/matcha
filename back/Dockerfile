@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 COPY . .
 
 #.DEV-MODE--
-#CMD ["npm", "run", "initdb", "&&", "npx", "nodemon", "index.js"]
 CMD ["/bin/sh", "-c", "npm run initdb ; npx nodemon index.js"]
+#CMD [ "npx", "nodemon", "index.js"]
 
 #.PROD-MODE--
