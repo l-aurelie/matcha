@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const pool = require("../../database/db");
 
+//- Get all users
 router.get("/all", async (req, res) => {
     try{
          console.log("ALL");
@@ -13,6 +14,7 @@ router.get("/all", async (req, res) => {
     }
  });
 
+ //- Get user filtered by age and distance
  router.get("/filter/:age/:distance", async (req, res) => {
     console.log("filter");
     const actual = await (await pool.query("SELECT * FROM users WHERE user_id = $1;", [1])).rows[0];
@@ -21,11 +23,16 @@ router.get("/all", async (req, res) => {
     const ageMax = actual.age + Number(req.params.age);
     try{
         //const userFiltered = await pool.query("SELECT * FROM users WHERE age BETWEEN $1 AND $2;", [ageMin, ageMax]);
-        const userFiltered = await pool.query("SELECT * FROM users WHERE ST_DistanceSphere(ST_MakePoint(latitude, longitude), ST_MakePoint($1, $2)) > 1;", [actual.latitude, actual.longitude]);
+        
+        const distance = await pool.query("SELECT ST_DistanceSphere(ST_MakePoint(latitude,longitude), ST_MakePoint($1, $2), 4326) FROM users;", [actual.latitude, actual.longitude]);
+        console.log("distance = ");
+        console.log(distance.rows);
+        const userFiltered = await pool.query("SELECT * FROM users WHERE ST_DistanceSphere(ST_MakePoint(latitude, longitude), ST_MakePoint($1, $2), 4326) > 1;", [actual.latitude, actual.longitude]);
         res.json(userFiltered.rows)
     }catch(err){console.error(err);}
  });
  
+ //- Get user  by :id
  router.get("/:id", async (req, res) => {
      try{
          const {id} = req.params;
@@ -34,6 +41,7 @@ router.get("/all", async (req, res) => {
      }catch(err){ console.error(err.message); }
  });
  
+ //- Add new user
  router.post("/", async (req, res) => {
      try{
          console.log("POST");
@@ -49,6 +57,7 @@ router.get("/all", async (req, res) => {
      } catch(err){ console.error(err.message); }
  });
  
+ //- Update user by :id
  router.put("/:id", async (req, res) => {
      try{
          const {id} = req.params;
@@ -61,7 +70,8 @@ router.get("/all", async (req, res) => {
          console.err(err.message);
      }
  });
- 
+
+ //- Delete user by :id
  router.delete("/:id", async (req, res)=> {
      try{
          const {id} = req.params;

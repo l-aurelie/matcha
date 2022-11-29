@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import axios from "axios"; 
 import { useState } from "react";
 
+//- Affiche les users filtres par age et distance (dont les valeurs sont passees en param de la requete) 
 export default function ProposeProfiles(){
   const [allUsers, setAllUser] = useState([]);
 

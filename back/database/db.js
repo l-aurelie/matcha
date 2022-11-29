@@ -1,5 +1,6 @@
-//TODO
+//- pool : l'objet qui permet de se connecter a la db (outil du module pg qui nest pas un orm)
 
+//TODO var d'env, un seul objet pool? 
 const Pool = require("pg").Pool;
 
 const pool = new Pool({

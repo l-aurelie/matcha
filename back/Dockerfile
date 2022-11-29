@@ -10,6 +10,7 @@ WORKDIR /usr/src/app
 COPY . .
 
 #.DEV-MODE--
+#. On cree la db puis on lance l'API back
 CMD ["/bin/sh", "-c", "npm run initdb ; npx nodemon index.js"]
 #CMD [ "npx", "nodemon", "index.js"]
 

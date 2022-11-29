@@ -1,6 +1,4 @@
---\CREATE DATABASE matcha;
-
---\c matcha
+--/ Memo, juste des queries a copier coller dans la db
 
 CREATE TABLE IF NOT EXISTS users(
     user_id SERIAL PRIMARY KEY,

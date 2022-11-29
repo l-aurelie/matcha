@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useState } from 'react';
 
+//- Form d'ajout new user
 export default function UserForm() {
     const [newUser, setNewUser] = useState({});
   
@@ -10,9 +11,10 @@ export default function UserForm() {
         .then((res) => {console.log(res);})
         .catch((err) => {console.log(err);});
       console.log(newUser);
-      alert("Votre profil a ete mis a jour");
+      alert("Utilisateur ajoute avec succes");
     }
   
+    //- OnChange ajoute le champs a l'objet value
     const handleChange = (e) => {
       const name = e.target.name;
       const value = e.target.value;
