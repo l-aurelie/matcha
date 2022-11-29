@@ -7,7 +7,8 @@ export default function ProposeProfiles(){
   const [allUsers, setAllUser] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/user/filter/10/0')
+    //- /filter/:age/:distance (modifier manuellement age/distance pour tester)
+    axios.get('http://localhost:3000/user/filter/10/35')
       .then(
         (res) => {console.log(res.data);
         setAllUser(res.data);

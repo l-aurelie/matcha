@@ -38,9 +38,9 @@ async function createDb()
             "('porte de clichy (0.384)', 55, 48.89470, 2.31414)," + //Porte de clichy (384m)
             "('metro pt de clichy (0.384)', 43, 48.89470, 2.31414)," +
             "('ligne 14 pt de clichy (0.384)', 35, 48.89470, 2.31414)," +
-            "('cathedrale notre dame (5,32)', 32, 48.85363 , 2.34777)," + //cathedrale notre dame paris (5,32km)
-            "('notre dame de paris (5.32)', 65, 48.85363 , 2.34777)," +
-            "('notre dame (5.32)', 45, 48.85363, 2.34777)," +
+            "('cathedrale notre dame (5,32)', 32, 48.92437 , 2.25893)," + //gare de colombes (5,33km)
+            "('notre dame de paris (5.32)', 65, 48.92437 , 2.25893)," +
+            "('notre dame (5.32)', 45, 48.92437, 2.25893)," +
             "('jislain (11.76)', 15, 48.84209, 2.43643)," + // Chateau de vincennes (10.55)
             "('adrien(11.76)', 21, 48.84209, 2.43643)," +
             "('lucie (11.76)', 16, 48.84209, 2.43643)," +

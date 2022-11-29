@@ -21,13 +21,14 @@ router.get("/all", async (req, res) => {
     console.log(actual);
     const ageMin = actual.age - Number(req.params.age);
     const ageMax = actual.age + Number(req.params.age);
+    const distance = req.params.distance * 1000
     try{
         //const userFiltered = await pool.query("SELECT * FROM users WHERE age BETWEEN $1 AND $2;", [ageMin, ageMax]);
         
-        const distance = await pool.query("SELECT ST_DistanceSphere(ST_MakePoint(latitude,longitude), ST_MakePoint($1, $2), 4326) FROM users;", [actual.latitude, actual.longitude]);
+        //const dist = await pool.query("SELECT ST_DistanceSphere(ST_MakePoint(longitude,latitude), ST_MakePoint($1, $2)) FROM users;", [actual.longitude, actual.latitude]);
         console.log("distance = ");
-        console.log(distance.rows);
-        const userFiltered = await pool.query("SELECT * FROM users WHERE ST_DistanceSphere(ST_MakePoint(latitude, longitude), ST_MakePoint($1, $2), 4326) > 1;", [actual.latitude, actual.longitude]);
+        console.log(dist.rows);
+        const userFiltered = await pool.query("SELECT * FROM users WHERE ST_DistanceSphere(ST_MakePoint(longitude, latitude), ST_MakePoint($1, $2)) < $3;", [actual.longitude, actual.latitude, distance]);
         res.json(userFiltered.rows)
     }catch(err){console.error(err);}
  });
