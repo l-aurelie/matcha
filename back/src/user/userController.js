@@ -1,5 +1,6 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const bcrypt = require('bcrypt');
+const router = express.Router();
 const pool = require("../../database/db");
 
 //- Get all users
@@ -45,16 +46,22 @@ router.get("/all", async (req, res) => {
  
  //- Add new user
  router.post("/", async (req, res) => {
-     try{
-         console.log("POST");
-         console.log(req.body);
-         const {name, email, password, age} = req.body;
-         const latitude ='48.89666';
-         const longitude = '2.31835';
-         const newUser = await pool.query(
-             "INSERT INTO users (name, email, password, age, latitude, longitude) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *", [name, email, password, age, latitude, longitude]);
-         res.json("created");
-     } catch(err){ console.error(err.message); }
+   
+    console.log("POST");
+    console.log(req.body);
+    const {name, email, password, age} = req.body;
+    const latitude ='48.89666';
+    const longitude = '2.31835';
+    bcrypt.hash(password, 10)
+        .then(async hash => {
+            try{
+                const newUser = await pool.query(
+                    "INSERT INTO users (name, email, password, age, latitude, longitude) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *", [name, email, hash, age, latitude, longitude]);
+                res.json("created");
+            }catch(err){ console.error(err.message); }
+         })
+        .catch(err => {console.error(err.message)});
+
  });
  
  //- Update user by :id
