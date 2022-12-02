@@ -15,19 +15,20 @@ router.get("/all", async (req, res) => {
  });
 
  //- Get user filtered by age and distance
- router.get("/filter/:age/:distance", async (req, res) => {
+ router.get("/filter", async (req, res) => {
     console.log("filter");
     const actual = await (await pool.query("SELECT * FROM users WHERE user_id = $1;", [1])).rows[0];
     console.log(actual);
-    const ageMin = actual.age - Number(req.params.age);
-    const ageMax = actual.age + Number(req.params.age);
-    const distance = req.params.distance * 1000
+    const ageMin = actual.age - Number(req.query.age);
+    const ageMax = actual.age + Number(req.query.age);
+    const distance = req.query.distance * 1000
     try{
         //const userFiltered = await pool.query("SELECT * FROM users WHERE age BETWEEN $1 AND $2;", [ageMin, ageMax]);
         
         //const dist = await pool.query("SELECT ST_DistanceSphere(ST_MakePoint(longitude,latitude), ST_MakePoint($1, $2)) FROM users;", [actual.longitude, actual.latitude]);
-        console.log("distance = ");
-        console.log(dist.rows);
+        //console.log("distance = ");
+        //console.log(dist.rows);
+        
         const userFiltered = await pool.query("SELECT * FROM users WHERE ST_DistanceSphere(ST_MakePoint(longitude, latitude), ST_MakePoint($1, $2)) < $3;", [actual.longitude, actual.latitude, distance]);
         res.json(userFiltered.rows)
     }catch(err){console.error(err);}
@@ -47,13 +48,11 @@ router.get("/all", async (req, res) => {
      try{
          console.log("POST");
          console.log(req.body);
-         console.log(req.body.name);
-         console.log(req.body.age);
-         const {name, age} = req.body;
-         console.log(name);
-         console.log(age);
+         const {name, email, password, age} = req.body;
+         const latitude ='48.89666';
+         const longitude = '2.31835';
          const newUser = await pool.query(
-             "INSERT INTO users (name, age) VALUES ($1, $2) RETURNING *", [name, age]);
+             "INSERT INTO users (name, email, password, age, latitude, longitude) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *", [name, email, password, age, latitude, longitude]);
          res.json("created");
      } catch(err){ console.error(err.message); }
  });

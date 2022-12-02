@@ -17,10 +17,12 @@ async function createDb()
     
     //- On cree les tables
     await pool.query(
-        "CREATE TABLE IF NOT EXISTS users("+
+        "CREATE TABLE IF NOT EXISTS users("+ //TODO add NOT NULL 
         "user_id SERIAL PRIMARY KEY,"+
         "name VARCHAR(255),"+
+        "password VARCHAR(255),"+
         "age INTEGER,"+
+        "email VARCHAR(50) UNIQUE,"+ // TODO 50?
         "latitude FLOAT,"+
         "longitude FLOAT);"
     );
