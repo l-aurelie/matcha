@@ -29,7 +29,7 @@ export  function ProposeProfiles(){
   
   useEffect(() => {
     //- /filter (modifier manuellement age/distance pour tester)
-    axios.get('http://localhost:3000/user/filter', {params: {age : ageRange || 10, distance : distanceRange || 30 }})
+    axios.get('http://localhost:3000/filter', {params: {age : ageRange || 10, distance : distanceRange || 30 }})
       .then(
         (res) => {console.log(res.data);
         setAllUser(res.data);
@@ -42,7 +42,7 @@ export  function ProposeProfiles(){
       <p>_________________________________________________________________</p>
       <h3>PROPOSE PROFILES</h3>
       <ChangeFilterValues ageRange={ageRange} setAgeRange={setAgeRange} distanceRange={distanceRange} setDistanceRange={setDistanceRange}/>
-      {allUsers.map(user => (<li key={user.name}>{user.name} {user.age} : {user.latitude} {user.longitude}</li>))}
+      {allUsers.map(user => (<li key={user.user_id}>{user.name} {user.age} : {user.latitude} {user.longitude}</li>))}
       <p>_________________________________________________________________</p>
     </div>
   );
