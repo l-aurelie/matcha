@@ -1,7 +1,8 @@
 import './App.css';
 import React from 'react'
 import FormCreateUser from './user/FormCreateUser';
-import  { ProposeProfiles } from './match/ProposeProfile';
+import ProposeProfiles from './match/ProposeProfile';
+import Login from './user/Login';
 
 
 function App() {
@@ -11,6 +12,8 @@ function App() {
       <FormCreateUser/>
       <br/>
       <ProposeProfiles/>
+      <br/>
+      <Login/>
     </div>
   );
 }

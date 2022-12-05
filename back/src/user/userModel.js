@@ -11,11 +11,11 @@ module.exports = {
         }catch(err){ console.error(err.message); }
     },
 
-    findOneByMail: async function(email){
+    findOneByMail: async function(res, email){
         try{
             const user = await pool.query("SELECT * FROM users WHERE email = $1;", [email]);
-            return(user.rows);
-        }catch(err){console.err(err);}
+            return(user.rows[0]);
+        }catch(err){console.error(err); console.log("error findOneByMail"); res.status(500).json({err});}//TODO res 500? 
     },
     
     getAll: async function(res){

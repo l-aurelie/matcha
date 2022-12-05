@@ -18,10 +18,8 @@ function ChangeFilterValues(props) {
     </div>);
 }  
 
-
-
 //- Affiche les users filtres par age et distance (dont les valeurs sont passees en param de la requete) 
-export  function ProposeProfiles(){
+export default function ProposeProfiles(){
   const [allUsers, setAllUser] = useState([]);
   
   const [ageRange, setAgeRange] = useState();// TODO useState or var

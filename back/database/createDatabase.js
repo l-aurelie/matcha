@@ -60,7 +60,7 @@ async function createDb()
             "('prudence (41.54)', 36, 48.96008, 2.87886)," +
             "('martin (52.10)', 34, 48.95947, 3.02529)," + // gare de changis sur marne (52.10)
             "('flora (52.10)', 32, 48.95947, 3.02529)," +
-            "('seeder (52.10)', 37, 48.95947, 3.02529);"
+            "('seeder', 37, 48.95947, 3.02529);"
         );
     }
     else { console.log("Database allready created"); }
