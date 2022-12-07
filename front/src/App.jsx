@@ -2,7 +2,7 @@ import './App.css';
 import React from 'react'
 import FormCreateUser from './user/FormCreateUser';
 import ProposeProfiles from './match/ProposeProfile';
-import Login from './user/Login';
+import Login from './auth/Login';
 
 
 function App() {

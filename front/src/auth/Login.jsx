@@ -1,12 +1,18 @@
 import { useState } from "react";
 import axios from "axios";
 
+
+//- Formulaire de connection (l'utlisateur envoie sont email + password et recoit un acces_token quil stocke en local storage si ses donnees sont valides)
 export default function Login(){
     const [user, setUser] = useState({});
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post("http://localhost:3000/login", {...user})
-            .then((res) => {console.log(res);})
+            .then((res) => {
+                console.log(res.data);
+                if(res.data.token)
+                    localStorage.setItem('jwt', JSON.stringify(res.data));
+            })
             .catch((err) => {console.error(err);});
         alert("loggin");
     }

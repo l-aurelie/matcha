@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../../database/db');
+const auth = require('../login/authMiddleware');
 
  //- Get user filtered by age and distance
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
     console.log("filter");
     const actual = await (await pool.query("SELECT * FROM users WHERE user_id = $1;", [1])).rows[0];
     console.log(actual);

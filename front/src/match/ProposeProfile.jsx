@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import axios from "axios"; 
 import { useState } from "react";
-import Select from "react-select"
+import Select from "react-select";
+import { authHeader} from "../auth/authService";
 
   const ageOptions = [ {value: 10, label:'Select age gap'}, {value: 2, label:'2 years'}, {value: 5, label:'5 years'}, {value: 7, label:'7 years'}, {value: 10, label:'10 years'}, {value: 15, label:'15 years'}, {value: 25, label:'25 years'}, {value: 200, label:'unlimited'} ];
   const distanceOptions = [ {value: 30, label:'Select distance range'}, {value: 5, label:'5 km'}, {value: 10, label:'10 km'}, {value: 20, label:'20 km'}, {value: 30, label:'30 km'}, {value: 50, label:'50 km'}, {value: 100, label:'100 km'}, {value: 200, label:'200 km'}, {value: 2000, label:'unlimited'} ];
@@ -26,8 +27,9 @@ export default function ProposeProfiles(){
   const [distanceRange, setDistanceRange] = useState();
   
   useEffect(() => {
-    //- /filter (modifier manuellement age/distance pour tester)
-    axios.get('http://localhost:3000/filter', {params: {age : ageRange || 10, distance : distanceRange || 30 }})
+    axios.get('http://localhost:3000/filter', 
+              {params: {age : ageRange || 10, distance : distanceRange || 30 }, headers: authHeader()}
+              )
       .then(
         (res) => {console.log(res.data);
         setAllUser(res.data);
