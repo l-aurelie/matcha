@@ -20,11 +20,11 @@ router.post("/", async (req, res) => {
                     console.log("valid password");
                     res.status(200).json(
                         {userId : loginUser.user_id, 
-                        token: jwt.sign({userId: loginUser.user_id}, 'RANDOM_TOKEN_SECRET', {expiresIn: '24h'})});//TODO : CLE SECRETE
+                        token: jwt.sign({userId: loginUser.user_id}, 'RANDOM_TOKEN_SECRET', {expiresIn: '120s'})});//TODO : CLE SECRETE
                 }
                 else{
-                    res.status(401).json({mesage: "invalid email or password"});//pour question securite message generique
-                    console.log("invalid email or password");
+                    console.log("invalid password");
+                    res.status(401).json({message: "invalid email or password"});//pour question securite message generique
                 }
             })
             .catch((err) => {console.log(err); res.status(500).json({err});});

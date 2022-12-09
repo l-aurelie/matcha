@@ -5,6 +5,12 @@ const routes = require('./routes');
 
 routes.route();
 
+app.use((err, req, res, next) => {//TODO 
+    console.log("MIDDLEWARE ERROR :" + err.message);
+        if(!err.statusCode)
+            res.status(500).send('Internal server error, please try later');
+});
+
 app.listen(3000, () => {
     console.log("server is listening on port 3000")
 });

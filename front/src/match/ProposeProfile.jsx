@@ -22,6 +22,7 @@ function ChangeFilterValues(props) {
 //- Affiche les users filtres par age et distance (dont les valeurs sont passees en param de la requete) 
 export default function ProposeProfiles(){
   const [allUsers, setAllUser] = useState([]);
+  const [error, setError] = useState("");
   
   const [ageRange, setAgeRange] = useState();// TODO useState or var
   const [distanceRange, setDistanceRange] = useState();
@@ -31,10 +32,10 @@ export default function ProposeProfiles(){
               {params: {age : ageRange || 10, distance : distanceRange || 30 }, headers: authHeader()}
               )
       .then(
-        (res) => {console.log(res.data);
+        (res) => {
         setAllUser(res.data);
       })
-      .catch((err) => {console.log(err);});
+      .catch((err) => {setError(err.response.data.message); console.log("Axios error filter: " + err.response.data.message);});//TODO redirection connection
   },[ageRange, distanceRange]);
 
   return(
@@ -43,6 +44,7 @@ export default function ProposeProfiles(){
       <h3>PROPOSE PROFILES</h3>
       <ChangeFilterValues ageRange={ageRange} setAgeRange={setAgeRange} distanceRange={distanceRange} setDistanceRange={setDistanceRange}/>
       {allUsers.map(user => (<li key={user.user_id}>{user.name} {user.age} : {user.latitude} {user.longitude}</li>))}
+      <p>{error}</p>
       <p>_________________________________________________________________</p>
     </div>
   );
