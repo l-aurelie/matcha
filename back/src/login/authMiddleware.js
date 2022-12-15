@@ -6,7 +6,7 @@ module.exports =  async(req, res, next) => {
     try{
         console.log('auth middleware')
         const token = req.headers.authorization.split(' ')[1];
-        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');//TODO cle secrete
+        const decodedToken = jwt.verify(token, process.env.SECRET_KEY);//TODO cle secrete
         console.log('decodedToken'); console.log(decodedToken);
         const  userId = decodedToken.userId;
         req.auth = { userId: userId };

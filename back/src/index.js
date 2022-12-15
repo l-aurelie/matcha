@@ -2,6 +2,7 @@
 
 const app = require('./appConfig');
 const routes = require('./routes');
+require('dotenv').config();
 
 routes.route();
 

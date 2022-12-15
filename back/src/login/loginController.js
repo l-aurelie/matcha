@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
                     console.log("valid password");
                     res.status(200).json(
                         {userId : loginUser.user_id, 
-                        token: jwt.sign({userId: loginUser.user_id}, 'RANDOM_TOKEN_SECRET', {expiresIn: '120s'})});//TODO : CLE SECRETE
+                        token: jwt.sign({userId: loginUser.user_id}, process.env.SECRET_KEY, {expiresIn: '120s'})});//TODO : CLE SECRETE
                 }
                 else{
                     console.log("invalid password");
