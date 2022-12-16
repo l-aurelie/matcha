@@ -21,6 +21,8 @@ async function createDb()
         "user_id SERIAL PRIMARY KEY,"+
         "name VARCHAR(255),"+
         "password VARCHAR(255),"+
+        "active BOOLEAN DEFAULT false,"+
+        "validationToken VARCHAR(255),"+
         "age INTEGER,"+
         "email VARCHAR(50) UNIQUE,"+ // TODO 50?
         "latitude FLOAT,"+

@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const userQuery = require('./userModel');
 const pool = require('../../database/db');
+const { sendConfirmMail, createConfirmationToken } = require('../login/mailerService');
 
 //- Get all users
 router.get("/all", async (req, res) => {
@@ -19,9 +20,12 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
     console.log("POST");
     const {name, email, password, age} = req.body;
+    const confirmationToken = createConfirmationToken();
+    console.log("confirmation :" + confirmationToken);
     bcrypt.hash(password, 10)
         .then(async hash => {
             await userQuery.createUser(res, {name, email, hashPassword : hash , age, latitude : '48.89666', longitude  : '2.31835'});
+            sendConfirmMail(email, confirmationToken);
          })
         .catch(err => {console.error(err.message)});
 });
